@@ -1,0 +1,34 @@
+PODS:
+  - BaseFoundation/Core (0.6.3)
+  - CTStorage (0.1.0):
+    - BaseFoundation/Core
+    - RealmSwift
+  - Realm (10.1.4):
+    - Realm/Headers (= 10.1.4)
+  - Realm/Headers (10.1.4)
+  - RealmSwift (10.1.4):
+    - Realm (= 10.1.4)
+
+DEPENDENCIES:
+  - CTStorage (from `../`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Realm
+    - RealmSwift
+  https://github.com/ours-curiosity/CTSpecs:
+    - BaseFoundation
+
+EXTERNAL SOURCES:
+  CTStorage:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  BaseFoundation: f15ce540297dad34cb5e95481a5720a7094544de
+  CTStorage: eeb2892faaffb85b3f690f7c83376a396d76b196
+  Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
+  RealmSwift: 0e566ca714edb377bba8ea0811eafcea0b93734e
+
+PODFILE CHECKSUM: a70dabf9fc09098f5c9110457a71e3729b34a104
+
+COCOAPODS: 1.10.0

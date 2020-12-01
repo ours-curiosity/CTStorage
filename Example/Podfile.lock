@@ -1,7 +1,8 @@
 PODS:
   - BaseFoundation/Core (0.6.3)
-  - CTStorage (0.1.0):
+  - CTStorage (0.2.0):
     - BaseFoundation/Core
+    - Realm
     - RealmSwift
   - Realm (10.1.4):
     - Realm/Headers (= 10.1.4)
@@ -25,7 +26,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BaseFoundation: f15ce540297dad34cb5e95481a5720a7094544de
-  CTStorage: eeb2892faaffb85b3f690f7c83376a396d76b196
+  CTStorage: 9cb52b934a159dc48071dc68441b621f1bc2d73e
   Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
   RealmSwift: 0e566ca714edb377bba8ea0811eafcea0b93734e
 

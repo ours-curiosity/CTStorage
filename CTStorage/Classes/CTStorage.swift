@@ -17,7 +17,7 @@ public class CTStorage {
     /// 数据库对象
     public private(set) var realm: Realm?
     /// 数据库存储位置
-    public private(set) var realmFilePath: String = NSHomeDirectory() + "/Documents/realm/"
+    public private(set) var realmFilePath: String = NSHomeDirectory() + "/Documents/"
     
     /// 更新数据库
     
@@ -25,21 +25,44 @@ public class CTStorage {
     /// - Parameters:
     ///   - newVer: 新版本号
     ///   - fileName: 数据库名称
-    public func updateRealm(newVer: UInt64, fileName: String? = "") {
+    public func updateRealm(newVer: UInt64 = 1, fileURL: URL? = nil, fileName: String? = "", syncConfiguration: SyncConfiguration? = nil, readOnly:Bool = false, inMemoryId: String? = nil, encryptionKey: Data? = nil, migrationBlock: MigrationBlock? = nil, deleteRealmIfMigrationNeeded: Bool = false, shouldCompactOnLaunch: ((Int, Int) -> Bool)? = nil, objectTypes: [ObjectBase.Type]? = nil) {
         
-        var config = Realm.Configuration()
-        // 版本号
+        var config = Realm.Configuration.defaultConfiguration
+        
+        if config.schemaVersion == newVer {
+            // 不需升级,直接打开数据库
+            openRealm()
+            return
+        }
+        
+        // --- 版本号
         config.schemaVersion = newVer
-        
+        // --- 文件路径
+        let newPathTuple = self.ct_createFileUrl(curConfig: config, newFileUrl: fileURL, newFileName: fileName)
         // 创建数据库路径，并配置目录权限
-        try? FileManager.default.createDirectory(at: URL.init(fileURLWithPath: self.realmFilePath), withIntermediateDirectories: true, attributes: [FileAttributeKey.protectionKey: FileProtectionType.none])
-        config.fileURL = URL.init(fileURLWithPath: realmFilePath + ((fileName?.isEmpty ?? false) ? "default.realm" : "\(fileName ?? "default").realm"))
-        
-        // 压缩策略
-        config.shouldCompactOnLaunch = {(totalBytes, usedBytes) in
+        try? FileManager.default.createDirectory(at: URL.init(fileURLWithPath: newPathTuple.path), withIntermediateDirectories: true, attributes: [FileAttributeKey.protectionKey: FileProtectionType.none])
+        config.fileURL = newPathTuple.allPath
+        // --- 与MongoDB Realm同步的配置
+        config.syncConfiguration = syncConfiguration
+        // --- 是否只读
+        config.readOnly = readOnly
+        // --- 内存数据库key
+        if inMemoryId != nil && !(inMemoryId!.isEmpty) {
+            config.inMemoryIdentifier = inMemoryId
+        }
+        // --- 加密key
+        config.encryptionKey = encryptionKey
+        // --- 合并时的操作block
+        config.migrationBlock = migrationBlock
+        // --- 迁移数据库出现问题或者有新版本时是否允许删除原有数据库（慎用⚠️）
+        config.deleteRealmIfMigrationNeeded = deleteRealmIfMigrationNeeded
+        // --- 压缩策略
+        config.shouldCompactOnLaunch = shouldCompactOnLaunch ?? {(totalBytes, usedBytes) in
             let limitSize = 100 * 1024 * 1024
             return (totalBytes > limitSize) && ((Double(usedBytes) / Double(totalBytes)) < 0.5)
         }
+        // --- 数据库跟踪的类型限制
+        config.objectTypes = objectTypes
         
         openRealm(config: config)
     }
@@ -48,17 +71,14 @@ public class CTStorage {
     /// - Parameter config: 开启数据库的配置
     public func openRealm(config: Realm.Configuration? = nil) {
         
-        if config != nil {
+        if config != nil || self.realm == nil {
             Realm.Configuration.defaultConfiguration = config!
+            do {
+                self.realm = try Realm()
+            } catch {
+                print("writeHandler error: \(error)")
+            }
         }
-        
-        do {
-            self.realm = try Realm()
-        } catch {
-            print("writeHandler error: \(error)")
-        }
-        
-        self.realm = try? Realm()
     }
     
     /// 添加对象

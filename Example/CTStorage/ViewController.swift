@@ -41,8 +41,7 @@ class ViewController: UIViewController {
         person.dogs.append(dog)
         self.person = person
         
-        CTStorage.shared.addObject(obj: person)
-
+        CTStorage.shared.updateObject(obj: person)
     }
     
     @IBAction func btn2Action(_ sender: UIButton) {

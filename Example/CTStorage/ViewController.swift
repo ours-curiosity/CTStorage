@@ -31,26 +31,26 @@ class ViewController: UIViewController {
                 
         
         let dog = Dog.init()
-        dog.id = 1
+        dog.id = 4
         dog.name = "rich222"
         dog.age = 21
         
         let person = Person.init()
-        person.id = 1
+        person.id = 3
         person.name = "walker22221"
         person.dogs.append(dog)
         self.person = person
         
-    
-        CTStorage.shared.writeHandler { (realm) in
-            realm?.add(person, update: .modified)
-        }
+        CTStorage.shared.updateObject(obj: person, update: .error)
+//        CTStorage.shared.writeHandler { (realm) in
+//            realm?.add(person, update: .modified)
+//        }
     }
     
     @IBAction func btn2Action(_ sender: UIButton) {
         CTStorage.shared.deleteObject(self.person)
-//        CTStorage.shared.deleteDataBaseFile(fileName: "2345")
-//        CTStorage.shared.deleteAllDataBaseFile()
+        CTStorage.shared.deleteDataBaseFile(fileName: "2345")
+        CTStorage.shared.deleteAllDataBaseFile()
         
     }
 }

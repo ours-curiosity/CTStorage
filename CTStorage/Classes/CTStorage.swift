@@ -66,12 +66,12 @@ public class CTStorage {
             // 对updatePolicy 类型进行容错
             if obj?.havePrimaryKey() == true {
                 if safeUpdatePolicy == .error {
-                    assert(false, "updateObject(obj:update:) ，当前模型有primaryKey，传入的updatePolicy有误")
+                    assert(false, "updateObject(obj:update:) ，当前模型有primaryKey，传入的updatePolicy有误(应为'.modified、.all')")
                     safeUpdatePolicy = .modified
                 }
             }else {
                 if safeUpdatePolicy != .error {
-                    assert(false, "updateObject(obj:update:) ，当前模型没有primaryKey，传入的updatePolicy有误")
+                    assert(false, "updateObject(obj:update:) ，当前模型没有primaryKey，传入的updatePolicy有误(应为'.error')")
                     safeUpdatePolicy = .error
                 }
             }
@@ -92,12 +92,12 @@ public class CTStorage {
             // 对updatePolicy 类型进行容错
             if obj?.havePrimaryKey() == true {
                 if safeUpdatePolicy == .error {
-                    assert(false, "updateObject(obj:update:) ，当前模型有primaryKey，传入的updatePolicy有误")
+                    assert(false, "updateObject(obj:update:) ，当前模型有primaryKey，传入的updatePolicy有误(应为'.modified、.all')")
                     safeUpdatePolicy = .modified
                 }
             }else {
                 if safeUpdatePolicy != .error {
-                    assert(false, "updateObject(obj:update:) ，当前模型没有primaryKey，传入的updatePolicy有误")
+                    assert(false, "updateObject(obj:update:) ，当前模型没有primaryKey，传入的updatePolicy有误(应为'.error')")
                     safeUpdatePolicy = .error
                 }
             }

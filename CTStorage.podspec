@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'CTStorage'
-    s.version          = '0.2.4'
+    s.version          = '0.2.5'
     s.summary          = '基于Realm数据库封装的数据存储库.'
     
     # This description is used to generate tags and improve search results.
@@ -41,5 +41,4 @@ Pod::Spec.new do |s|
     # s.frameworks = 'UIKit', 'MapKit'
     s.dependency 'Realm'
     s.dependency 'RealmSwift'
-    s.dependency 'BaseFoundation/Core'
 end

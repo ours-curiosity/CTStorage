@@ -2,12 +2,11 @@
 //  CTStorage.swift
 //  CTStorage
 //
-//  Created by apple on 2020/11/30.
+//  Created by walker on 2020/11/30.
 //
 
 import UIKit
 import RealmSwift
-import BaseFoundation
 
 public class CTStorage {
     
@@ -16,11 +15,16 @@ public class CTStorage {
     public static let shared: CTStorage = CTStorage()
     
     /// 数据库对象
-    public var realm: Realm?
+    public private(set) var realm: Realm?
     /// 数据库存储位置
-    public var realmFilePath: String = NSHomeDirectory() + "/Documents/realm/"
+    public private(set) var realmFilePath: String = NSHomeDirectory() + "/Documents/realm/"
     
     /// 更新数据库
+    
+    /// 创建或更新数据库
+    /// - Parameters:
+    ///   - newVer: 新版本号
+    ///   - fileName: 数据库名称
     public func updateRealm(newVer: UInt64, fileName: String? = "") {
         
         var config = Realm.Configuration()
@@ -41,6 +45,7 @@ public class CTStorage {
     }
     
     /// 开启数据库
+    /// - Parameter config: 开启数据库的配置
     public func openRealm(config: Realm.Configuration? = nil) {
         
         if config != nil {
@@ -50,15 +55,16 @@ public class CTStorage {
         do {
             self.realm = try Realm()
         } catch {
-            DebugPrint("writeHandler error: \(error)")
+            print("writeHandler error: \(error)")
         }
         
         self.realm = try? Realm()
     }
     
-    
     /// 添加对象
-    /// - Parameter obj: 需要添加的数据
+    /// - Parameters:
+    ///   - obj: 需要添加的数据
+    ///   - update: 添加时或更新时的模式
     public func addObject(obj: Object?, update: Realm.UpdatePolicy = .error) {
         
         if obj != nil {
@@ -84,7 +90,7 @@ public class CTStorage {
     
     /// 更新对象
     /// - Parameters:
-    ///   - obj: 需要添加的数据
+    ///   - obj: 需要更新的数据
     ///   - update: 更新的模式
     public func updateObject(obj: Object?, update: Realm.UpdatePolicy = .modified) {
         if obj != nil {
@@ -144,7 +150,7 @@ public class CTStorage {
                 handler(self?.realm)
             })
         } catch {
-            DebugPrint("writeHandler error: \(error)")
+            print("writeHandler error: \(error)")
         }
     }
     
@@ -162,30 +168,33 @@ public class CTStorage {
         if fileName != nil && !fileName!.isEmpty {
             filePath = filePath?.deletingLastPathComponent().appendingPathComponent("\(fileName!).realm")
         }
+        
         let needRemoveURLs = [
             filePath,
             filePath!.appendingPathExtension("lock"),
             filePath!.appendingPathExtension("note"),
             filePath!.appendingPathExtension("management")
         ];
+        
         for url in needRemoveURLs {
             do {
                 if url != nil {
                     try FileManager.default.removeItem(at: url!)
                 }
             } catch {
-                DebugPrint("deleteDataBaseFile error: \(error)")
+                print("deleteDataBaseFile error: \(error)")
             }
         }
     }
     
-    /// 删除所有数据库文件
-    public func deleteAllDataBaseFile() {
-        let url = URL.init(fileURLWithPath: self.realmFilePath)
+    /// 删除指定目录下所有的文件，不仅是数据库文件⚠️
+    /// - Parameter filePath: 指定目录
+    public func deleteAllFile(filePath: String? = nil) {
+        let url = URL.init(fileURLWithPath: filePath ?? self.realmFilePath)
         do {
             try FileManager.default.removeItem(at: url)
         } catch {
-            DebugPrint("deleteAllDataBaseFile error: \(error)")
+            print("deleteAllDataBaseFile error: \(error)")
         }
     }
     

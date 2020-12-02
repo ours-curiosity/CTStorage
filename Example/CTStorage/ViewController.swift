@@ -18,6 +18,7 @@ class ViewController: UIViewController {
 
         
         CTStorage.shared.updateRealm(newVer: 1, fileName: "2345")
+        
         print("realm file path: \(String(describing: CTStorage.shared.realm?.configuration.fileURL?.standardizedFileURL))")
 
     }
@@ -29,7 +30,6 @@ class ViewController: UIViewController {
 
     @IBAction func btn1Action(_ sender: UIButton) {
                 
-        
         let dog = Dog.init()
         dog.id = 4
         dog.name = "rich222"
@@ -41,16 +41,14 @@ class ViewController: UIViewController {
         person.dogs.append(dog)
         self.person = person
         
-        CTStorage.shared.updateObject(obj: person, update: .error)
-//        CTStorage.shared.writeHandler { (realm) in
-//            realm?.add(person, update: .modified)
-//        }
+        CTStorage.shared.addObject(obj: person)
+
     }
     
     @IBAction func btn2Action(_ sender: UIButton) {
         CTStorage.shared.deleteObject(self.person)
-        CTStorage.shared.deleteDataBaseFile(fileName: "2345")
-        CTStorage.shared.deleteAllDataBaseFile()
+//        CTStorage.shared.deleteDataBaseFile(fileName: "2345")
+//        CTStorage.shared.deleteAllFile()
         
     }
 }

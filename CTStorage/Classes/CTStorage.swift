@@ -59,11 +59,50 @@ public class CTStorage {
     
     /// 添加对象
     /// - Parameter obj: 需要添加的数据
-    public func addObject(obj: Object?, update: Realm.UpdatePolicy = .modified) {
-
+    public func addObject(obj: Object?, update: Realm.UpdatePolicy = .error) {
+        
         if obj != nil {
+            var safeUpdatePolicy = update
+            // 对updatePolicy 类型进行容错
+            if obj?.havePrimaryKey() == true {
+                if safeUpdatePolicy == .error {
+                    assert(false, "updateObject(obj:update:) ，当前模型有primaryKey，传入的updatePolicy有误")
+                    safeUpdatePolicy = .modified
+                }
+            }else {
+                if safeUpdatePolicy != .error {
+                    assert(false, "updateObject(obj:update:) ，当前模型没有primaryKey，传入的updatePolicy有误")
+                    safeUpdatePolicy = .error
+                }
+            }
+            
             self.writeHandler { (realm) in
-                realm?.add(obj!, update: update)
+                realm?.add(obj!, update: safeUpdatePolicy)
+            }
+        }
+    }
+    
+    /// 更新对象
+    /// - Parameters:
+    ///   - obj: 需要添加的数据
+    ///   - update: 更新的模式
+    public func updateObject(obj: Object?, update: Realm.UpdatePolicy = .modified) {
+        if obj != nil {
+            var safeUpdatePolicy = update
+            // 对updatePolicy 类型进行容错
+            if obj?.havePrimaryKey() == true {
+                if safeUpdatePolicy == .error {
+                    assert(false, "updateObject(obj:update:) ，当前模型有primaryKey，传入的updatePolicy有误")
+                    safeUpdatePolicy = .modified
+                }
+            }else {
+                if safeUpdatePolicy != .error {
+                    assert(false, "updateObject(obj:update:) ，当前模型没有primaryKey，传入的updatePolicy有误")
+                    safeUpdatePolicy = .error
+                }
+            }
+            self.writeHandler { (realm) in
+                realm?.add(obj!, update: safeUpdatePolicy)
             }
         }
     }

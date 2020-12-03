@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Realm
 import RealmSwift
 
 public class CTStorage {
@@ -131,6 +132,24 @@ public class CTStorage {
                 realm?.add(obj!, update: safeUpdatePolicy)
             }
         }
+    }
+    
+    /// 查找数据
+    /// - Parameters:
+    ///   - type: 数据类型
+    ///   - filter: 过滤条件
+    /// - Returns: 符合过滤条件的数据集合
+    public func objects<T: RealmSwiftObject>(type: T.Type, filter: String? = nil) -> [T] {
+        var objs: [T] = [T]()
+        if var ret = self.realm?.objects(type) {
+            if filter != nil && !filter!.isEmpty {
+                ret = ret.filter(filter!)
+            }
+            ret.elements.forEach { (obj) in
+                objs.append(obj)
+            }
+        }
+        return objs;
     }
     
     /// 删除对象

@@ -40,6 +40,13 @@
                                     <action selector="btn2Action:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="xJE-rP-dWj"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JA5-Q7-9N0">
+                                <rect key="frame" x="172.5" y="350" width="30" height="30"/>
+                                <state key="normal" title="查"/>
+                                <connections>
+                                    <action selector="searchDataBtnAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="hC5-Y2-AKs"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -47,6 +54,8 @@
                             <constraint firstItem="WXF-b5-Hxg" firstAttribute="top" secondItem="knu-9V-Bcg" secondAttribute="bottom" constant="50" id="I88-k8-7X2"/>
                             <constraint firstItem="knu-9V-Bcg" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="KGn-y5-YN9"/>
                             <constraint firstItem="WXF-b5-Hxg" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="TVe-wa-dP4"/>
+                            <constraint firstItem="JA5-Q7-9N0" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="U8e-wV-l3A"/>
+                            <constraint firstItem="JA5-Q7-9N0" firstAttribute="top" secondItem="WXF-b5-Hxg" secondAttribute="bottom" constant="40" id="p5u-ke-ZWE"/>
                         </constraints>
                     </view>
                 </viewController>

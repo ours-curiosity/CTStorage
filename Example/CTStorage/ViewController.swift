@@ -50,5 +50,11 @@ class ViewController: UIViewController {
 //        CTStorage.shared.deleteAllFile()
         
     }
+    @IBAction func searchDataBtnAction(_ sender: UIButton) {
+        
+        let dogs = CTStorage.shared.objects(type: Dog.self)
+        
+        print("dogs: \(dogs)")
+    }
 }
 

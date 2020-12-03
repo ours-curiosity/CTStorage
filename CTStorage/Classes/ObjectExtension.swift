@@ -19,4 +19,21 @@ public extension Object {
         }
         return false
     }
+    
+    /// 深拷贝出未托管的模型
+    /// - Returns: 未托管的模型
+    func deepCopy() -> Self {
+        let newObject = type(of: self).init()
+        for property in objectSchema.properties {
+            guard let value = value(forKey: property.name) else {
+                continue
+            }
+            if let detachable = value as? Object {
+                newObject.setValue(detachable.deepCopy(), forKey: property.name)
+            } else {
+                newObject.setValue(value, forKey: property.name)
+            }
+        }
+        return newObject
+    }
 }

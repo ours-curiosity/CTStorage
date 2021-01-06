@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'CTStorage'
-    s.version          = '0.2.8'
+    s.version          = '0.2.9'
     s.summary          = '基于Realm数据库封装的数据存储库.'
     
     # This description is used to generate tags and improve search results.

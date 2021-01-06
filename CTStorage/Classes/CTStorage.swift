@@ -72,7 +72,7 @@ public class CTStorage {
     /// - Parameter config: 开启数据库的配置
     public func openRealm(config: Realm.Configuration? = nil) {
         
-        if config != nil || self.realm == nil {
+        if (config != nil) , (self.realm == nil) {
             Realm.Configuration.defaultConfiguration = config!
             do {
                 self.realm = try Realm()
